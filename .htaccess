@@ -1,0 +1,35 @@
+
+RewriteOptions inherit
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# first change the http -> https
+RewriteCond %{HTTPS} !=on
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule ^(.*)$ https://2014.eriepittsburghtrail.org/$1 [R=301,L]
+# now comes the Word Press stuff
+RewriteBase /
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+RewriteCond %{HTTP_HOST} ^2014\.pgherie\.org$
+RewriteRule ^/?$ "https\:\/\/2014\.pgherie\.com\/" [R=301,L]
+RewriteCond %{HTTP_HOST} ^2014\.eriepittsburghtrail\.org$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.2014\.eriepittsburghtrail\.org$
+RewriteRule ^(.*)$ "https\:\/\/2014\.pgherie\.com\/$1" [R=301,L]
+RewriteCond %{HTTP_HOST} ^2020\.eriepittsurghtrail\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.2020\.eriepittsurghtrail\.com$
+RewriteRule ^(.*)$ "https\:\/\/2020\.pgherie\.org\/$1" [R=301,L]
+
